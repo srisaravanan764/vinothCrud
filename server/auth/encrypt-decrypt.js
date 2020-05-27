@@ -1,0 +1,18 @@
+var config = require('../config/environment');
+var crypto = require('crypto');
+var algorithm = 'aes-256-cbc';
+
+exports.encrypt = function(text) {
+	var cipher = crypto.createCipher(algorithm, config.secrets.refTokenKey);
+	var crypted = cipher.update(text, 'utf8', 'base64');
+	crypted += cipher.final('base64');
+	return crypted;
+};
+
+exports.decrypt = function(text) {
+    console.log("config.secrets.refTokenKey", text);
+	var decipher = crypto.createDecipher(algorithm, config.secrets.refTokenKey);
+	var dec = decipher.update(text.trim(), 'base64', 'utf8');
+	dec += decipher.final('utf8');
+	return dec;
+};
